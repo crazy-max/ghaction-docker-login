@@ -3949,8 +3949,11 @@ function loginStandard(registry, username, password) {
             core.info(`Logging into Docker Hub...`);
         }
         yield execm.exec('docker', loginArgs, true, password).then(res => {
-            if (res.stderr != '' && !res.success) {
-                throw new Error(res.stderr);
+            if (res.stderr != '') {
+                console.log(res.stderr);
+                if (!res.success) {
+                    throw new Error(res.stderr);
+                }
             }
             core.info(`Login Succeeded!`);
         });

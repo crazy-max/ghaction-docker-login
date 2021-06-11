@@ -33,8 +33,11 @@ export async function loginStandard(registry: string, username: string, password
     core.info(`Logging into Docker Hub...`);
   }
   await execm.exec('docker', loginArgs, true, password).then(res => {
-    if (res.stderr != '' && !res.success) {
-      throw new Error(res.stderr);
+    if (res.stderr != '') {
+      core.warning(res.stderr);
+      if (!res.success) {
+        throw new Error(res.stderr);
+      }
     }
     core.info(`Login Succeeded!`);
   });
